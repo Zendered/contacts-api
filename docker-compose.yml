@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  contactsapi:
+    image: ${DOCKER_REGISTRY-}zendered/contacts
+    build:
+      context: .
+      dockerfile: .
+    restart: always
+    ports:
+      - "8080:80"
+      - "8081:443"
+    depends_on:
+      - contactsdb
+  contactsdb:
+    image: "mcr.microsoft.com/mssql/server"
+    environment: 
+      - "SA_PASSWORD=Numsey#2022"
+      - "ACCEPT_EULA=Y"
+    volumes:
+      - "./Data/Volumes:/var/opt/mssql/data"
+    ports:
+      - "1430:1433"
